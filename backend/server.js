@@ -1,13 +1,13 @@
 const express = require('express');
 const cors = require('cors');
-const twilio = require('twilio');
 // const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 const app = express();
+require('dotenv').config();
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = (accountSid, authToken);
+const client = require('twilio')(accountSid, authToken);
 
 app.use(cors());
 
@@ -15,14 +15,15 @@ app.get('/',(req,res) => {
     res.send("Express Server!!");
 })
 
-app.get('/send-otp',(req,res) => {
+app.get('/send',(req,res) => {
     const {receiver,textMessage} = req.query
     client.messages.create({
         body: textMessage,
         from: "+17409964473",
-        to: receiver,
+        to: `+91${receiver}`,
     })
-    .then((message) => console.log(message.body))
+    .then((message) => console.log(message))
+    .catch(err => console.log(err))
 })
 
 
