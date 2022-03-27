@@ -1,5 +1,5 @@
 import "./ContactInfo.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Card,
   Typography,
@@ -8,6 +8,7 @@ import {
   Modal,
   Input,
   InputNumber,
+  message,
 } from "antd";
 import { useLocation } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
@@ -16,7 +17,6 @@ const { TextArea } = Input;
 const { Text } = Typography;
 
 const ContactInfo = () => {
-    
   const location = useLocation();
   const { name, phone, gender } = location.state;
 
@@ -24,7 +24,7 @@ const ContactInfo = () => {
   const [inputValue, setInputValue] = useState("");
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [finalNumber, setFinalNumber] = useState("");
-  const [OTP,setOTP] = useState(Math.floor(100000 + Math.random() * 900000));
+  const [OTP, setOTP] = useState(Math.floor(100000 + Math.random() * 900000));
 
   const handleInputValue = (e) => {
     setInputValue(e.target.value);
@@ -32,22 +32,42 @@ const ContactInfo = () => {
 
   const handlePhoneNumber = (e) => {
     setPhoneNumber(e);
-    if(e){
-        let num = e.toString();
-        setFinalNumber(num);
+    if (e) {
+      let num = e.toString();
+      setFinalNumber(num);
     }
   };
 
-  const handleSubmit = () => {
-    
-    fetch(`http://localhost:4000/send?receiver=${finalNumber}&textMessage=${inputValue}`)
-    .catch(err => console.error(err))
-    
-    setIsModalVisible(false);
-    setInputValue("");
-    setPhoneNumber(null);
+  const success = () => {
+    message.success("Message Sent!");
+  };
 
-  }
+  const error = () => {
+    message.error("Please Enter Verified and Valid Number");
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const headers = {
+      name: `${name}`,
+      OTP: `${OTP}`,
+    };
+
+    fetch(
+      `http://localhost:4000/send?receiver=${finalNumber}&textMessage=Message:${inputValue}  OTP: ${OTP}`,
+      { headers }
+    );
+
+    if (finalNumber === "9521075741") {
+      success();
+      setIsModalVisible(false);
+      setInputValue("");
+      setPhoneNumber(null);
+    } else {
+      error();
+    }
+  };
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -61,7 +81,6 @@ const ContactInfo = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
 
   return (
     <div className="container">
@@ -94,7 +113,7 @@ const ContactInfo = () => {
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
-            <Text strong>Hi, your OTP is: {OTP}</Text>,
+          <Text strong>Hi, your OTP is: {OTP}</Text>,
           <Button key="submit" type="primary" onClick={handleSubmit}>
             Send Message
           </Button>,

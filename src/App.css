@@ -1,7 +1,24 @@
-.List{
-  
+.App{
+  display: flex;
+  flex-direction: column;
 }
 
-.title{
-  text-align: center;
+.navbar{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 33px;
+}
+
+.list-component{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message-link{
+  color: black;
+  font-size: large;
+  border: 1px solid grey;
+  padding: 5px;
 }
