@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import Navigation from "./Routes";
 import reportWebVitals from "./reportWebVitals";
+
+import Navigation from "./Routes/Routes";
 
 ReactDOM.render(<Navigation />, document.getElementById("root"));
 

@@ -1,22 +1,23 @@
 import "./MessageList.css";
 import React, { useEffect, useState } from "react";
-import { List, Avatar, Typography } from "antd";
+import { List, Typography } from "antd";
 
 const { Title } = Typography;
 
 const MessageList = () => {
   const [list, setList] = useState([]);
 
+  //fetch list of messages when page renders
   useEffect(() => {
     fetch("http://localhost:4000/message-list")
       .then((res) => res.json())
       .then((data) => {
         setList(data);
-        console.log(list);
       })
       .catch((err) => console.log(err));
   }, []);
 
+  //remove duplicates from message list
   const getUniqueListBy = (arr, key) => {
     return [...new Map(arr.map((item) => [item[key], item])).values()];
   };
@@ -32,9 +33,9 @@ const MessageList = () => {
             itemLayout="horizontal"
             dataSource={newList}
             renderItem={(item) => (
-              <List.Item>
+              <List.Item key={item.id}>
                 <List.Item.Meta
-                  title={`${item.name} (OTP:${item.otp})`}
+                  title={`${item.name}  (OTP: ${item.otp})`}
                   description={item.date}
                 />
               </List.Item>

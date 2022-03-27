@@ -3,11 +3,16 @@
   flex-direction: column;
 }
 
+.title{
+  font-family: 'Lato', sans-serif;
+}
+
 .navbar{
   display: flex;
   justify-content: space-around;
   align-items: center;
   margin-bottom: 33px;
+  box-shadow: 0 5px 17px -2px rgb(0 0 0 / 20%);
 }
 
 .list-component{
@@ -19,6 +24,11 @@
 .message-link{
   color: black;
   font-size: large;
-  border: 1px solid grey;
-  padding: 5px;
+  padding: 10px 15px;
+}
+
+.message-link:hover{
+  background-color: #3A3845;
+  color: white;
+  border-radius: 20px;
 }

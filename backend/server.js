@@ -55,7 +55,7 @@ app.get("/send", (req, res) => {
 
 app.get("/message-list", (req, res) => {
 
-  Message.find()
+  Message.find().sort({_id:-1})
     .then((response) =>{
         res.status(200).json(response);
     })

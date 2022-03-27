@@ -10,6 +10,7 @@ import {
   InputNumber,
   message,
 } from "antd";
+
 import { useLocation } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 
@@ -17,13 +18,20 @@ const { TextArea } = Input;
 const { Text } = Typography;
 
 const ContactInfo = () => {
+
+  //to get parameters from state provided by Link (React-Router)
   const location = useLocation();
   const { name, phone, gender } = location.state;
 
+  //States to handle TextBox Modal
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  //values in the Modal
   const [inputValue, setInputValue] = useState("");
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [finalNumber, setFinalNumber] = useState("");
+
+  //generate new OTP every time user clicks on send message
   const [OTP, setOTP] = useState(Math.floor(100000 + Math.random() * 900000));
 
   const handleInputValue = (e) => {
@@ -54,11 +62,14 @@ const ContactInfo = () => {
       OTP: `${OTP}`,
     };
 
+    //send request to twilio with custom headers
     fetch(
       `http://localhost:4000/send?receiver=${finalNumber}&textMessage=Message:${inputValue}  OTP: ${OTP}`,
       { headers }
     );
 
+
+    //check for verified number in the phoneNumber box
     if (finalNumber === "9521075741") {
       success();
       setIsModalVisible(false);
@@ -103,7 +114,7 @@ const ContactInfo = () => {
         </Text>
         <Text>{phone}</Text>
         <Divider />
-        <Button type="primary" onClick={showModal}>
+        <Button key="submit" type="primary" onClick={showModal}>
           Send Message
         </Button>
       </Card>
@@ -113,10 +124,13 @@ const ContactInfo = () => {
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[
-          <Text strong>Hi, your OTP is: {OTP}</Text>,
-          <Button key="submit" type="primary" onClick={handleSubmit}>
-            Send Message
-          </Button>,
+          <React.Fragment key={OTP}>
+            <Text strong>Hi, your OTP is: {OTP}</Text>,
+            <Button key="submit" type="primary" onClick={handleSubmit}>
+              Send Message
+            </Button>
+            ,
+          </React.Fragment>,
         ]}
       >
         <TextArea rows={4} value={inputValue} onChange={handleInputValue} />

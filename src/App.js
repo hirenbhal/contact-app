@@ -6,9 +6,11 @@ import { Link } from "react-router-dom";
 const { Title } = Typography;
 
 const App = () => {
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  //to fetch random users and set in data state
   useEffect(() => {
     fetch("https://randomuser.me/api?results=10")
       .then((response) => response.json())
@@ -22,7 +24,7 @@ const App = () => {
   return (
     <div className="App">
       <div className="navbar">
-        <Title className="title">Contact App</Title>
+        <Title className="title">Contacts App</Title>
         <Link className="message-link" to="/message-list">
           Messages List
         </Link>
